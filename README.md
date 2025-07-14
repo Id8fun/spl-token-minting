@@ -1,5 +1,7 @@
 # SPL Token Minting
 
+![SPL Token Minting](img/AI%20Design.png)
+
 生成SOLANA链上SPL代币工具，支持不同环境发布
 
 ## 🌟 功能特性

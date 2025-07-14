@@ -4,27 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPL Token Minting - SOLANA代币生成器</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="img/favicon_32x32.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon_16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon_32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="img/favicon_48x48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="img/favicon_64x64.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="img/favicon_96x96.png">
+    <link rel="icon" type="image/png" sizes="120x120" href="img/favicon_120x120.png">
+    <link rel="icon" type="image/png" sizes="144x144" href="img/favicon_144x144.png">
+    <link rel="icon" type="image/png" sizes="152x152" href="img/favicon_152x152.png">
+    <link rel="icon" type="image/png" sizes="180x180" href="img/favicon_180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="img/favicon_192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="img/favicon_512x512.png">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon_180x180.png">
+    
+    <!-- Android Chrome Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="img/favicon_192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="img/favicon_512x512.png">
+    
     <link rel="stylesheet" href="styles/design-system.css">
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animation.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="gradient-bg">
+        <svg xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="goo">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+              <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="goo" />
+              <feBlend in="SourceGraphic" in2="goo" />
+            </filter>
+          </defs>
+        </svg>
+        <div class="gradients-container">
+          <div class="g1"></div>
+          <div class="g2"></div>
+          <div class="g3"></div>
+          <div class="g4"></div>
+          <div class="g5"></div>
+          <div class="interactive"></div>
+        </div>
+    </div>
     <div class="app-container">
         <!-- Header -->
         <header class="header">
             <div class="container">
                 <div class="header-content">
                     <div class="logo">
-                        <h1 class="logo-text">SPL Token Minting</h1>
-                        <span class="logo-subtitle">SOLANA代币生成器</span>
+                        <div class="logo-container">
+                            <img src="img/favicon_512x512.png" alt="SPL Token Minting Logo" class="logo-image">
+                            <div class="logo-content">
+                                <h1 class="logo-text">SPL Token Minting</h1>
+                                <span class="logo-subtitle">SOLANA代币生成器</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="network-selector">
-                        <label for="network" class="network-label">网络环境:</label>
-                        <select id="network" class="network-select">
-                            <option value="devnet">开发环境 (Devnet)</option>
-                            <option value="testnet">测试环境 (Testnet)</option>
-                            <option value="mainnet">正式环境 (Mainnet)</option>
-                        </select>
+                    <div class="header-actions">
+                        <div class="language-selector">
+                            <select id="language" class="language-select">
+                                <option value="zh-CN">简体中文</option>
+                                <option value="en">English</option>
+                            </select>
+                        </div>
+                        <div class="color-mode-toggle">
+                            <button id="colorModeBtn" class="color-mode-btn">☀️</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -40,6 +90,19 @@
                     </div>
 
                     <form id="tokenForm" class="token-form">
+                        <!-- 网络环境 -->
+                        <div class="form-group">
+                            <label for="network" class="form-label">
+                                <span class="label-text">网络环境</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <select id="network" name="network" class="form-select" required>
+                                <option value="devnet">开发环境 (Devnet)</option>
+                                <option value="testnet">测试环境 (Testnet)</option>
+                                <option value="mainnet">正式环境 (Mainnet)</option>
+                            </select>
+                        </div>
+
                         <!-- 私钥导入 -->
                         <div class="form-group">
                             <label for="privateKey" class="form-label">
@@ -236,5 +299,6 @@
     </div>
 
     <script src="js/main.js"></script>
+    <script src="js/animation.js"></script>
 </body>
 </html>
