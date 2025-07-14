@@ -120,6 +120,20 @@
                             <div class="form-help">
                                 <span class="help-text">私钥将用于签署交易，不会被存储或传输</span>
                             </div>
+                            <!-- 钱包余额显示 -->
+                            <div id="balanceContainer" class="balance-container" style="display: none;">
+                                <div class="balance-info">
+                                    <div class="balance-label">
+                                        <span class="balance-icon">💰</span>
+                                        <span class="balance-text">当前余额</span>
+                                    </div>
+                                    <div class="balance-value">
+                                        <span id="balanceAmount">--</span>
+                                        <span class="balance-unit">SOL</span>
+                                    </div>
+                                    <div id="balanceStatus" class="balance-status"></div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- 代币名称 -->
@@ -242,14 +256,75 @@
                         <!-- 提交按钮 -->
                         <div class="form-actions">
                             <button type="submit" id="createTokenBtn" class="btn btn-primary">
-                                <span class="btn-text">创建代币</span>
-                                <div class="btn-loading" style="display: none;">
-                                    <div class="spinner"></div>
-                                    <span>创建中...</span>
+                            <span class="btn-text">创建代币</span>
+                            <div class="rainbow-progress-container" id="loadingSpinner" style="display: none;">
+                                <div class="rainbow-progress-bar">
+                                    <div class="rainbow-progress-fill"></div>
                                 </div>
-                            </button>
+                                <span class="loading-text">正在创建代币...</span>
+                            </div>
+                        </button>
                         </div>
                     </form>
+                </div>
+
+                <!-- 加载进度显示区域 -->
+                <div class="progress-container" id="progressContainer" style="display: none;">
+                    <div class="progress-header">
+                        <h3>代币创建进度</h3>
+                        <div class="progress-percentage" id="progressPercentage">0%</div>
+                    </div>
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar" id="progressBar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                    <div class="progress-steps">
+                        <div class="progress-step" id="step1">
+                            <div class="step-icon">1</div>
+                            <div class="step-text">验证私钥</div>
+                        </div>
+                        <div class="progress-step" id="step2">
+                            <div class="step-icon">2</div>
+                            <div class="step-text">检查余额</div>
+                        </div>
+                        <div class="progress-step" id="step3">
+                            <div class="step-icon">3</div>
+                            <div class="step-text">创建铸造账户</div>
+                        </div>
+                        <div class="progress-step" id="step4">
+                            <div class="step-icon">4</div>
+                            <div class="step-text">铸造代币</div>
+                        </div>
+                        <div class="progress-step" id="step5">
+                            <div class="step-icon">5</div>
+                            <div class="step-text">创建元数据</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 代码执行进度显示区域 -->
+                <div class="code-execution-container" id="codeExecutionContainer" style="display: none;">
+                    <div class="code-execution-header">
+                        <h4>代码执行日志</h4>
+                        <div class="execution-status" id="executionStatus">执行中...</div>
+                    </div>
+                    <div class="code-terminal" id="codeTerminal">
+                        <div class="terminal-header">
+                            <div class="terminal-controls">
+                                <span class="terminal-dot red"></span>
+                                <span class="terminal-dot yellow"></span>
+                                <span class="terminal-dot green"></span>
+                            </div>
+                            <div class="terminal-title">SPL Token Creator Terminal</div>
+                        </div>
+                        <div class="terminal-content" id="terminalContent">
+                            <div class="terminal-line">
+                                <span class="terminal-prompt">$</span>
+                                <span class="terminal-text">初始化代币创建器...</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 结果显示区域 -->

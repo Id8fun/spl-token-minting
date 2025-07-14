@@ -21,6 +21,9 @@ class SPLTokenMinter {
         this.selectedImage = null;
         this.currentLanguage = 'zh-CN';
         this.currentColorMode = 'light';
+        this.isProcessing = false;
+        this.currentStep = 0;
+        this.totalSteps = 5;
         
         this.translations = {
             'zh-CN': {
@@ -128,6 +131,12 @@ class SPLTokenMinter {
         const tokenForm = document.getElementById('tokenForm');
         tokenForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            
+            // 检查是否正在处理中（限流处理）
+            if (this.isProcessing) {
+                return;
+            }
+            
             this.handleFormSubmission();
         });
 
@@ -147,6 +156,22 @@ class SPLTokenMinter {
         const symbolInput = document.getElementById('tokenSymbol');
         symbolInput.addEventListener('input', (e) => {
             e.target.value = e.target.value.toUpperCase();
+        });
+
+        // Private key input for balance checking
+        const privateKeyInput = document.getElementById('privateKey');
+        let balanceCheckTimeout;
+        privateKeyInput.addEventListener('input', (e) => {
+            clearTimeout(balanceCheckTimeout);
+            const privateKey = e.target.value.trim();
+            
+            if (privateKey.length >= 32) {
+                balanceCheckTimeout = setTimeout(() => {
+                    this.checkWalletBalance(privateKey);
+                }, 1000); // 延迟1秒检查余额
+            } else {
+                this.hideBalance();
+            }
         });
 
         // Language selector
@@ -306,6 +331,11 @@ class SPLTokenMinter {
     }
 
     async handleFormSubmission() {
+        // 检查是否正在处理中（限流处理）
+        if (this.isProcessing) {
+            return;
+        }
+        
         // Validate all fields
         const requiredFields = ['privateKey', 'tokenName', 'tokenSymbol', 'tokenSupply'];
         let isFormValid = true;
@@ -327,6 +357,9 @@ class SPLTokenMinter {
             return;
         }
 
+        // 设置处理状态
+        this.isProcessing = true;
+
         // Show loading state
         this.setLoadingState(true);
         this.hideResults();
@@ -343,9 +376,18 @@ class SPLTokenMinter {
             
         } catch (error) {
             console.error('Token creation failed:', error);
+            
+            // 添加错误日志到终端
+            this.addTerminalLog('', '');
+            this.addTerminalLog('console.error("💥 代币创建过程中发生错误");', 'error');
+            this.addTerminalLog(`console.error("错误详情: ${error.message}");`, 'error');
+            this.updateExecutionStatus('执行失败', 'error');
+            
+            this.hideProgress();
             this.showError(error.message || '代币创建失败，请重试');
         } finally {
             this.setLoadingState(false);
+            this.isProcessing = false;
         }
     }
 
@@ -363,6 +405,12 @@ class SPLTokenMinter {
     }
 
     async createToken(formData) {
+        // 显示进度
+        this.showProgress();
+        
+        // 启动进度模拟
+        const progressPromise = this.simulateProgress();
+        
         // Create FormData for file upload
         const uploadData = new FormData();
         
@@ -384,18 +432,351 @@ class SPLTokenMinter {
             body: uploadData
         });
 
+        // 等待进度模拟完成
+        await progressPromise;
+        
+        // 添加API调用日志
+        this.addTerminalLog('', '');
+        this.addTerminalLog('// === 发送API请求 ===', 'warning');
+        this.addTerminalLog('fetch("/api/create-token", { method: "POST", body: formData })', 'info');
+        this.addTerminalLog('console.log("📡 正在发送代币创建请求...");', 'success');
+        
         if (!response.ok) {
             const errorData = await response.json();
+            // 添加错误日志
+            this.addTerminalLog('', '');
+            this.addTerminalLog('console.error("❌ API请求失败");', 'error');
+            this.addTerminalLog(`console.error("错误信息: ${errorData.error || response.statusText}");`, 'error');
+            this.updateExecutionStatus('执行失败', 'error');
+            this.hideProgress();
             throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
         }
 
-        return await response.json();
+        const result = await response.json();
+        
+        // 完成所有步骤
+        this.updateProgress(100);
+        
+        // 添加成功日志
+        this.addTerminalLog('', '');
+        this.addTerminalLog('console.log("🎉 代币创建成功!");', 'success');
+        this.addTerminalLog(`console.log("代币地址: ${result.data?.mintAddress || 'N/A'}");`, 'success');
+        this.updateExecutionStatus('执行完成', 'completed');
+        
+        // 延迟一下再隐藏进度并显示结果
+        setTimeout(() => {
+            this.hideProgress();
+        }, 1000);
+        
+        return result;
+    }
+
+    async checkWalletBalance(privateKey) {
+        try {
+            this.showBalanceLoading();
+            
+            const response = await fetch(`${this.apiBaseUrl}/api/check-balance`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    privateKey: privateKey,
+                    network: this.currentNetwork
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || '余额检查失败');
+            }
+            
+            if (data.success) {
+                this.showBalance({
+                    balance: data.balance,
+                    network: data.network,
+                    isEnough: data.isEnough,
+                    walletAddress: data.walletAddress
+                });
+            } else {
+                throw new Error(data.error || '余额检查失败');
+            }
+            
+        } catch (error) {
+            console.error('余额检查失败:', error);
+            this.showBalanceError(error.message || '余额检查失败，请重试');
+        }
+    }
+
+    showBalanceLoading() {
+        const container = document.getElementById('balanceContainer');
+        const amount = document.getElementById('balanceAmount');
+        const status = document.getElementById('balanceStatus');
+        
+        container.style.display = 'block';
+        amount.textContent = '...';
+        status.textContent = '正在查询余额...';
+        status.className = 'balance-status';
+    }
+
+    showBalance(balanceData) {
+        const container = document.getElementById('balanceContainer');
+        const amount = document.getElementById('balanceAmount');
+        const status = document.getElementById('balanceStatus');
+        
+        container.style.display = 'block';
+        amount.textContent = parseFloat(balanceData.balance).toFixed(4);
+        
+        if (!balanceData.isEnough) {
+            status.textContent = '余额不足，可能无法支付交易费用';
+            status.className = 'balance-status error';
+        } else if (balanceData.balance < 0.1) {
+            status.textContent = '余额较低，请注意交易费用';
+            status.className = 'balance-status warning';
+        } else {
+            status.textContent = `钱包地址: ${balanceData.walletAddress.slice(0, 8)}...${balanceData.walletAddress.slice(-8)}`;
+            status.className = 'balance-status success';
+        }
+    }
+
+    showBalanceError(message) {
+        const container = document.getElementById('balanceContainer');
+        const amount = document.getElementById('balanceAmount');
+        const status = document.getElementById('balanceStatus');
+        
+        container.style.display = 'block';
+        amount.textContent = '--';
+        status.textContent = message;
+        status.className = 'balance-status error';
+    }
+
+    hideBalance() {
+        const container = document.getElementById('balanceContainer');
+        container.style.display = 'none';
+    }
+
+    // 显示进度
+    showProgress() {
+        const container = document.getElementById('progressContainer');
+        const resultContainer = document.getElementById('resultContainer');
+        const errorContainer = document.getElementById('errorContainer');
+        
+        // 隐藏其他容器
+        if (resultContainer) resultContainer.style.display = 'none';
+        if (errorContainer) errorContainer.style.display = 'none';
+        
+        // 重置进度
+        this.currentStep = 0;
+        this.updateProgress(0);
+        this.resetSteps();
+        
+        // 显示进度容器
+        container.style.display = 'block';
+        
+        // Show code execution container
+        this.showCodeExecution();
+        
+        container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // 隐藏进度
+    hideProgress() {
+        const container = document.getElementById('progressContainer');
+        container.style.display = 'none';
+        this.hideCodeExecution();
+    }
+
+    // Code execution display methods
+    showCodeExecution() {
+        const container = document.getElementById('codeExecutionContainer');
+        const terminalContent = document.getElementById('terminalContent');
+        const executionStatus = document.getElementById('executionStatus');
+        
+        // Reset terminal content
+        terminalContent.innerHTML = '<div class="terminal-line"><span class="terminal-prompt">$</span><span class="terminal-text">初始化代币创建器...</span></div>';
+        
+        // Reset status
+        executionStatus.textContent = '执行中...';
+        executionStatus.className = 'execution-status';
+        
+        // Show container
+        container.style.display = 'block';
+        
+        // Add initial logs
+        this.addTerminalLog('import { Connection, Keypair, PublicKey } from "@solana/web3.js";', 'info');
+        this.addTerminalLog('import { createMint, getOrCreateAssociatedTokenAccount, mintTo } from "@solana/spl-token";', 'info');
+        this.addTerminalLog('import { createCreateMetadataAccountV3Instruction } from "@metaplex-foundation/mpl-token-metadata";', 'info');
+        this.addTerminalLog('', '');
+        this.addTerminalLog('console.log("🚀 SPL代币创建器启动中...");', 'success');
+    }
+
+    hideCodeExecution() {
+        document.getElementById('codeExecutionContainer').style.display = 'none';
+    }
+
+    addTerminalLog(text, type = '', delay = 100) {
+        setTimeout(() => {
+            const terminalContent = document.getElementById('terminalContent');
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            
+            if (text.trim() === '') {
+                line.innerHTML = '<span class="terminal-text">&nbsp;</span>';
+            } else if (text.startsWith('//') || text.startsWith('console.log') || text.startsWith('import')) {
+                line.innerHTML = `<span class="terminal-prompt">></span><span class="terminal-text ${type}">${text}</span>`;
+            } else {
+                line.innerHTML = `<span class="terminal-prompt">$</span><span class="terminal-text ${type}">${text}</span>`;
+            }
+            
+            terminalContent.appendChild(line);
+            
+            // Auto scroll to bottom
+            terminalContent.scrollTop = terminalContent.scrollHeight;
+        }, delay);
+    }
+
+    updateExecutionStatus(status, type = '') {
+        const executionStatus = document.getElementById('executionStatus');
+        executionStatus.textContent = status;
+        executionStatus.className = `execution-status ${type}`;
+    }
+
+    // 更新进度
+    updateProgress(percentage) {
+        const progressFill = document.getElementById('progressFill');
+        const progressPercentage = document.getElementById('progressPercentage');
+        
+        progressFill.style.width = percentage + '%';
+        progressPercentage.textContent = Math.round(percentage) + '%';
+    }
+
+    // 更新步骤状态
+    updateStep(stepNumber, status = 'active') {
+        const step = document.getElementById(`step${stepNumber}`);
+        if (!step) return;
+        
+        // 移除所有状态类
+        step.classList.remove('active', 'completed');
+        
+        // 添加新状态
+        if (status === 'completed') {
+            step.classList.add('completed');
+        } else if (status === 'active') {
+            step.classList.add('active');
+        }
+        
+        // 更新进度百分比
+        if (status === 'completed') {
+            this.currentStep = stepNumber;
+            const percentage = (stepNumber / this.totalSteps) * 100;
+            this.updateProgress(percentage);
+        }
+    }
+
+    // 重置所有步骤
+    resetSteps() {
+        for (let i = 1; i <= this.totalSteps; i++) {
+            const step = document.getElementById(`step${i}`);
+            if (step) {
+                step.classList.remove('active', 'completed');
+            }
+        }
+    }
+
+    // 模拟进度步骤
+    async simulateProgress() {
+        const steps = [
+            { 
+                step: 1, 
+                delay: 500, 
+                message: '验证私钥...',
+                logs: [
+                    'const privateKeyArray = bs58.decode(privateKey);',
+                    'const keypair = Keypair.fromSecretKey(privateKeyArray);',
+                    'console.log("✅ 私钥验证成功", keypair.publicKey.toString());'
+                ]
+            },
+            { 
+                step: 2, 
+                delay: 800, 
+                message: '检查余额...',
+                logs: [
+                    'const connection = new Connection(clusterApiUrl("devnet"));',
+                    'const balance = await connection.getBalance(keypair.publicKey);',
+                    'console.log("💰 钱包余额:", balance / LAMPORTS_PER_SOL, "SOL");'
+                ]
+            },
+            { 
+                step: 3, 
+                delay: 1200, 
+                message: '创建铸造账户...',
+                logs: [
+                    'const mint = await createMint(',
+                    '  connection,',
+                    '  keypair,',
+                    '  keypair.publicKey,',
+                    '  null,',
+                    '  decimals',
+                    ');',
+                    'console.log("🏭 铸造账户创建成功:", mint.toString());'
+                ]
+            },
+            { 
+                step: 4, 
+                delay: 1500, 
+                message: '铸造代币...',
+                logs: [
+                    'const tokenAccount = await getOrCreateAssociatedTokenAccount(',
+                    '  connection, keypair, mint, keypair.publicKey',
+                    ');',
+                    'await mintTo(connection, keypair, mint, tokenAccount.address, keypair, supply);',
+                    'console.log("🪙 代币铸造完成:", supply, "tokens");'
+                ]
+            },
+            { 
+                step: 5, 
+                delay: 800, 
+                message: '创建元数据...',
+                logs: [
+                    'const metadataInstruction = createCreateMetadataAccountV3Instruction({',
+                    '  metadata: metadataPDA,',
+                    '  mint: mint,',
+                    '  mintAuthority: keypair.publicKey,',
+                    '  payer: keypair.publicKey,',
+                    '  updateAuthority: keypair.publicKey',
+                    '}, { createMetadataAccountArgsV3: metadataArgs });',
+                    'console.log("📋 元数据创建完成");'
+                ]
+            }
+        ];
+        
+        for (const { step, delay, message, logs } of steps) {
+            this.updateStep(step, 'active');
+            
+            // 更新加载文本
+            const loadingText = document.querySelector('.loading-text');
+            if (loadingText) {
+                loadingText.textContent = message;
+            }
+            
+            // 添加代码执行日志
+            this.addTerminalLog('', '');
+            this.addTerminalLog(`// === ${message.replace('...', '')} ===`, 'warning');
+            
+            for (let j = 0; j < logs.length; j++) {
+                this.addTerminalLog(logs[j], 'info', j * 150);
+            }
+            
+            await new Promise(resolve => setTimeout(resolve, delay));
+            this.updateStep(step, 'completed');
+        }
     }
 
     setLoadingState(isLoading) {
         const submitBtn = document.getElementById('createTokenBtn');
         const btnText = submitBtn.querySelector('.btn-text');
-        const btnLoading = submitBtn.querySelector('.btn-loading');
+        const btnLoading = submitBtn.querySelector('.rainbow-progress-container');
         
         submitBtn.disabled = isLoading;
         
@@ -491,7 +872,7 @@ class SPLTokenMinter {
         const createBtn = document.querySelector('.btn-text');
         if (createBtn) createBtn.textContent = t.createToken;
         
-        const loadingText = document.querySelector('.btn-loading span');
+        const loadingText = document.querySelector('.loading-text');
         if (loadingText) loadingText.textContent = t.creating;
         
         // Update form labels
