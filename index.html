@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPL Token Minting - SOLANA代币生成器</title>
+    <link rel="stylesheet" href="styles/design-system.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <h1 class="logo-text">SPL Token Minting</h1>
+                        <span class="logo-subtitle">SOLANA代币生成器</span>
+                    </div>
+                    <div class="network-selector">
+                        <label for="network" class="network-label">网络环境:</label>
+                        <select id="network" class="network-select">
+                            <option value="devnet">开发环境 (Devnet)</option>
+                            <option value="testnet">测试环境 (Testnet)</option>
+                            <option value="mainnet">正式环境 (Mainnet)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2 class="form-title">创建您的SPL代币</h2>
+                        <p class="form-description">填写以下信息来创建您的SOLANA链上SPL代币</p>
+                    </div>
+
+                    <form id="tokenForm" class="token-form">
+                        <!-- 私钥导入 -->
+                        <div class="form-group">
+                            <label for="privateKey" class="form-label">
+                                <span class="label-text">钱包私钥</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <input 
+                                type="password" 
+                                id="privateKey" 
+                                name="privateKey" 
+                                class="form-input" 
+                                placeholder="请输入您的钱包私钥 (Base58格式)"
+                                required
+                            >
+                            <div class="form-help">
+                                <span class="help-text">私钥将用于签署交易，不会被存储或传输</span>
+                            </div>
+                        </div>
+
+                        <!-- 代币名称 -->
+                        <div class="form-group">
+                            <label for="tokenName" class="form-label">
+                                <span class="label-text">代币名称</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="tokenName" 
+                                name="tokenName" 
+                                class="form-input" 
+                                placeholder="例如: My Awesome Token"
+                                maxlength="32"
+                                required
+                            >
+                        </div>
+
+                        <!-- 代币简称 -->
+                        <div class="form-group">
+                            <label for="tokenSymbol" class="form-label">
+                                <span class="label-text">代币简称</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="tokenSymbol" 
+                                name="tokenSymbol" 
+                                class="form-input" 
+                                placeholder="例如: MAT"
+                                maxlength="10"
+                                style="text-transform: uppercase;"
+                                required
+                            >
+                        </div>
+
+                        <!-- 代币简介 -->
+                        <div class="form-group">
+                            <label for="tokenDescription" class="form-label">
+                                <span class="label-text">代币简介</span>
+                            </label>
+                            <textarea 
+                                id="tokenDescription" 
+                                name="tokenDescription" 
+                                class="form-textarea" 
+                                placeholder="描述您的代币用途和特点..."
+                                maxlength="200"
+                                rows="4"
+                            ></textarea>
+                            <div class="form-help">
+                                <span class="help-text">最多200个字符</span>
+                            </div>
+                        </div>
+
+                        <!-- 代币数量 -->
+                        <div class="form-group">
+                            <label for="tokenSupply" class="form-label">
+                                <span class="label-text">代币总量</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <input 
+                                type="number" 
+                                id="tokenSupply" 
+                                name="tokenSupply" 
+                                class="form-input" 
+                                placeholder="1000000"
+                                min="1"
+                                max="1000000000000"
+                                value="1000000"
+                                required
+                            >
+                        </div>
+
+                        <!-- 小数位数 -->
+                        <div class="form-group">
+                            <label for="tokenDecimals" class="form-label">
+                                <span class="label-text">小数位数</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <select id="tokenDecimals" name="tokenDecimals" class="form-select" required>
+                                <option value="0">0 (整数代币)</option>
+                                <option value="2">2 (类似美分)</option>
+                                <option value="6">6 (推荐)</option>
+                                <option value="9" selected>9 (类似SOL)</option>
+                            </select>
+                        </div>
+
+                        <!-- 代币图片上传 -->
+                        <div class="form-group">
+                            <label for="tokenImage" class="form-label">
+                                <span class="label-text">代币图片</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <div class="file-upload-container">
+                                <input 
+                                    type="file" 
+                                    id="tokenImage" 
+                                    name="tokenImage" 
+                                    class="file-input" 
+                                    accept="image/*"
+                                    required
+                                >
+                                <label for="tokenImage" class="file-upload-label">
+                                    <div class="file-upload-content">
+                                        <div class="upload-icon">📁</div>
+                                        <div class="upload-text">
+                                            <span class="upload-primary">点击上传图片</span>
+                                            <span class="upload-secondary">支持 PNG, JPG, GIF (推荐 1000x1000)</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                <div id="imagePreview" class="image-preview" style="display: none;">
+                                    <img id="previewImg" src="" alt="预览图片">
+                                    <button type="button" id="removeImage" class="remove-image">×</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 提交按钮 -->
+                        <div class="form-actions">
+                            <button type="submit" id="createTokenBtn" class="btn btn-primary">
+                                <span class="btn-text">创建代币</span>
+                                <div class="btn-loading" style="display: none;">
+                                    <div class="spinner"></div>
+                                    <span>创建中...</span>
+                                </div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 结果显示区域 -->
+                <div id="resultContainer" class="result-container" style="display: none;">
+                    <div class="result-header">
+                        <h3 class="result-title">代币创建成功！</h3>
+                    </div>
+                    <div class="result-content">
+                        <div class="result-item">
+                            <span class="result-label">代币地址:</span>
+                            <span id="tokenMint" class="result-value"></span>
+                            <button class="copy-btn" onclick="copyToClipboard('tokenMint')">复制</button>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">代币账户:</span>
+                            <span id="tokenAccount" class="result-value"></span>
+                            <button class="copy-btn" onclick="copyToClipboard('tokenAccount')">复制</button>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">交易签名:</span>
+                            <span id="transactionSignature" class="result-value"></span>
+                            <button class="copy-btn" onclick="copyToClipboard('transactionSignature')">复制</button>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Solana Explorer:</span>
+                            <a id="explorerLink" href="#" target="_blank" class="explorer-link">查看交易</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 错误显示区域 -->
+                <div id="errorContainer" class="error-container" style="display: none;">
+                    <div class="error-content">
+                        <h3 class="error-title">创建失败</h3>
+                        <p id="errorMessage" class="error-message"></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p class="footer-text">© 2024 SPL Token Minting. 基于 Solana 区块链技术</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
