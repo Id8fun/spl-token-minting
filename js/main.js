@@ -2,11 +2,8 @@
 
 class SPLTokenMinter {
     constructor() {
-        this.rpcEndpoints = {
-            devnet: 'https://falling-virulent-lake.solana-devnet.quiknode.pro/1a9dd93335edb93c8953755162ba7acf57bf73cd',
-            testnet: 'https://falling-virulent-lake.solana-testnet.quiknode.pro/1a9dd93335edb93c8953755162ba7acf57bf73cd',
-            mainnet: 'https://falling-virulent-lake.solana-mainnet.quiknode.pro/1a9dd93335edb93c8953755162ba7acf57bf73cd'
-        };
+        // RPC endpoints are handled securely on the server side
+        // Frontend communicates with backend API only
         
         this.explorerUrls = {
             devnet: 'https://explorer.solana.com/?cluster=devnet',
@@ -61,6 +58,19 @@ class SPLTokenMinter {
                 'decimals6': '6 (推荐)',
                 'decimals9': '9 (类似SOL)',
                 'successTitle': '代币创建成功！',
+                'successSubtitle': '您的SPL代币已成功部署到Solana区块链',
+                'tokenInfoSection': '📋 代币信息',
+                'blockchainInfoSection': '🔗 区块链信息',
+                'feeInfoSection': '💰 交易费用',
+                'tokenNameLabel': '代币名称',
+                'tokenSymbolLabel': '代币符号',
+                'tokenSupplyLabel': '总供应量',
+                'tokenDecimalsLabel': '小数位数',
+                'networkFeeLabel': '网络费用:',
+                'metadataFeeLabel': '元数据费用:',
+                'totalFeeLabel': '总费用:',
+                'viewInExplorer': '在Solana Explorer查看',
+                'createNewToken': '创建新代币',
                 'tokenAddress': '代币地址:',
                 'tokenAccount': '代币账户:',
                 'transactionSignature': '交易签名:',
@@ -104,6 +114,19 @@ class SPLTokenMinter {
                 'decimals6': '6 (Recommended)',
                 'decimals9': '9 (Like SOL)',
                 'successTitle': 'Token Created Successfully!',
+                'successSubtitle': 'Your SPL token has been successfully deployed to the Solana blockchain',
+                'tokenInfoSection': '📋 Token Information',
+                'blockchainInfoSection': '🔗 Blockchain Information',
+                'feeInfoSection': '💰 Transaction Fees',
+                'tokenNameLabel': 'Token Name',
+                'tokenSymbolLabel': 'Token Symbol',
+                'tokenSupplyLabel': 'Total Supply',
+                'tokenDecimalsLabel': 'Decimals',
+                'networkFeeLabel': 'Network Fee:',
+                'metadataFeeLabel': 'Metadata Fee:',
+                'totalFeeLabel': 'Total Fee:',
+                'viewInExplorer': 'View in Solana Explorer',
+                'createNewToken': 'Create New Token',
                 'tokenAddress': 'Token Address:',
                 'tokenAccount': 'Token Account:',
                 'transactionSignature': 'Transaction Signature:',
@@ -973,11 +996,39 @@ class SPLTokenMinter {
         const resultTitle = document.querySelector('.result-title');
         if (resultTitle) resultTitle.textContent = t.successTitle;
         
+        const resultSubtitle = document.querySelector('.result-subtitle');
+        if (resultSubtitle) resultSubtitle.textContent = t.successSubtitle;
+        
+        // Update section titles
+        const sectionTitles = document.querySelectorAll('.section-title');
+        if (sectionTitles[0]) sectionTitles[0].textContent = t.tokenInfoSection;
+        if (sectionTitles[1]) sectionTitles[1].textContent = t.blockchainInfoSection;
+        if (sectionTitles[2]) sectionTitles[2].textContent = t.feeInfoSection;
+        
+        // Update info labels
+        const infoLabels = document.querySelectorAll('.info-label');
+        if (infoLabels[0]) infoLabels[0].textContent = t.tokenNameLabel;
+        if (infoLabels[1]) infoLabels[1].textContent = t.tokenSymbolLabel;
+        if (infoLabels[2]) infoLabels[2].textContent = t.tokenSupplyLabel;
+        if (infoLabels[3]) infoLabels[3].textContent = t.tokenDecimalsLabel;
+        
+        // Update result labels
         const resultLabels = document.querySelectorAll('.result-label');
         if (resultLabels[0]) resultLabels[0].textContent = t.tokenAddress;
         if (resultLabels[1]) resultLabels[1].textContent = t.tokenAccount;
         if (resultLabels[2]) resultLabels[2].textContent = t.transactionSignature;
         if (resultLabels[3]) resultLabels[3].textContent = t.solanaExplorer;
+        
+        // Update fee labels
+        const feeLabels = document.querySelectorAll('.fee-label');
+        if (feeLabels[0]) feeLabels[0].textContent = t.networkFeeLabel;
+        if (feeLabels[1]) feeLabels[1].textContent = t.metadataFeeLabel;
+        if (feeLabels[2]) feeLabels[2].textContent = t.totalFeeLabel;
+        
+        // Update action buttons
+        const actionBtns = document.querySelectorAll('.action-btn');
+        if (actionBtns[0]) actionBtns[0].textContent = t.viewInExplorer;
+        if (actionBtns[1]) actionBtns[1].textContent = t.createNewToken;
         
         // Update error section
         const errorTitle = document.querySelector('.error-title');

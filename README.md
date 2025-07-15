@@ -43,11 +43,9 @@ npm start
 
 项目支持三种Solana网络环境：
 
-| 环境 | 网络 | RPC端点 |
-|------|------|---------|
-| 开发环境 | Devnet | `https://falling-virulent-lake.solana-devnet.quiknode.pro/...` |
-| 测试环境 | Testnet | `https://falling-virulent-lake.solana-testnet.quiknode.pro/...` |
-| 正式环境 | Mainnet | `https://falling-virulent-lake.solana-mainnet.quiknode.pro/...` |
+- **开发环境 (Devnet)**: 用于开发和测试
+- **测试环境 (Testnet)**: 用于最终测试
+- **正式环境 (Mainnet)**: 生产环境
 
 ## 📝 使用流程
 
@@ -174,7 +172,7 @@ SPLCOIN/
 - `bs58`: Base58 编码解码
 
 ### 自定义配置
-如需修改RPC端点，请编辑 `server.js` 中的 `RPC_ENDPOINTS` 配置。
+项目使用默认的Solana网络配置，如需自定义可在代码中进行相应调整。
 
 ## 📞 技术支持
 

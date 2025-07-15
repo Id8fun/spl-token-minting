@@ -1690,6 +1690,36 @@ body.dark-mode .error-container {
   border: 1px solid rgba(64, 64, 64, 0.3);
 }
 
+/* 修复暗色模式下结果区域文字颜色 */
+body.dark-mode .result-title,
+body.dark-mode .result-subtitle,
+body.dark-mode .section-title,
+body.dark-mode .info-label,
+body.dark-mode .info-value,
+body.dark-mode .result-label,
+body.dark-mode .fee-label,
+body.dark-mode .fee-value {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+body.dark-mode .result-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+body.dark-mode .info-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+body.dark-mode .total-fee .fee-value {
+  color: #ffd700;
+}
+
+body.dark-mode .result-value {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 body.dark-mode .error-container {
   border: 2px solid var(--color-error);
 }

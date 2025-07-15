@@ -7,9 +7,9 @@
 ## ✅ 已实现功能
 
 ### 1. 多环境支持
-- ✅ **开发环境 (Devnet)**: `https://falling-virulent-lake.solana-devnet.quiknode.pro/...`
-- ✅ **测试环境 (Testnet)**: `https://falling-virulent-lake.solana-testnet.quiknode.pro/...`
-- ✅ **正式环境 (Mainnet)**: `https://falling-virulent-lake.solana-mainnet.quiknode.pro/...`
+- ✅ **开发环境 (Devnet)**: 用于开发和测试
+- ✅ **测试环境 (Testnet)**: 用于最终测试
+- ✅ **正式环境 (Mainnet)**: 生产环境
 
 ### 2. 完整的代币创建流程
 - ✅ **代币名称**: 支持最多32字符的代币名称
