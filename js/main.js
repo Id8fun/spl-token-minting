@@ -219,7 +219,8 @@ class SPLTokenMinter {
         // 默认情况下，假设API在同一域名下
         return `${protocol}//${hostname}:3001`;
     }
-        this.initializeColorMode();
+
+    initializeColorMode() {
         this.initializeLanguage();
     }
 
