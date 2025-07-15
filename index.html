@@ -401,6 +401,11 @@
                                 <span class="fee-label">元数据费用:</span>
                                 <span id="metadataFee" class="fee-value">-- SOL</span>
                             </div>
+                            <div class="fee-item">
+                                <span class="fee-label">平台手续费:</span>
+                                <span id="platformFee" class="fee-value">-- 代币</span>
+                                <span id="platformFeeStatus" class="fee-status">--</span>
+                            </div>
                             <div class="fee-item total-fee">
                                 <span class="fee-label">总费用:</span>
                                 <span id="totalFee" class="fee-value">-- SOL</span>
@@ -430,6 +435,83 @@
                 </div>
             </div>
         </main>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="container">
+                <div class="faq-header">
+                    <h2 class="faq-title" data-i18n="faq.title">常见问题</h2>
+                    <p class="faq-subtitle" data-i18n="faq.subtitle">关于SPL代币创建的常见问题解答</p>
+                </div>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question" data-i18n="faq.q1.question">
+                            <span class="faq-icon">❓</span>
+                            什么是SPL代币？
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p data-i18n="faq.q1.answer">SPL代币是基于Solana区块链的标准代币格式，类似于以太坊的ERC-20代币。它具有高速度、低费用的特点，适合各种去中心化应用。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" data-i18n="faq.q2.question">
+                            <span class="faq-icon">💰</span>
+                            创建代币需要多少费用？
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p data-i18n="faq.q2.answer">创建SPL代币的网络费用通常在0.01-0.02 SOL之间。此外，平台会收取总供应量5%的代币作为服务费。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" data-i18n="faq.q3.question">
+                            <span class="faq-icon">🔐</span>
+                            私钥安全吗？
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p data-i18n="faq.q3.answer">您的私钥仅在本地浏览器中处理，不会被发送到我们的服务器存储。请妥善保管您的私钥，不要泄露给他人。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" data-i18n="faq.q4.question">
+                            <span class="faq-icon">🌐</span>
+                            支持哪些网络？
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p data-i18n="faq.q4.answer">我们支持Solana的三个网络环境：Devnet（开发网络）、Testnet（测试网络）和Mainnet（主网）。建议先在Devnet测试。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" data-i18n="faq.q5.question">
+                            <span class="faq-icon">📸</span>
+                            对代币图片有什么要求？
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p data-i18n="faq.q5.answer">支持PNG、JPG、GIF格式，文件大小不超过5MB，推荐使用1000x1000像素的正方形图片以获得最佳显示效果。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" data-i18n="faq.q6.question">
+                            <span class="faq-icon">⏱️</span>
+                            创建代币需要多长时间？
+                            <span class="faq-toggle">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p data-i18n="faq.q6.answer">通常在1-3分钟内完成，具体时间取决于网络拥堵情况。创建过程包括验证、铸造、转账手续费和元数据创建等步骤。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Footer -->
         <footer class="footer">

@@ -1137,15 +1137,21 @@ body::before {
 .result-container {
   max-width: 600px;
   margin: var(--space-8) auto 0;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-primary);
   border-radius: 24px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--border-primary);
   overflow: hidden;
   transform: translateY(0);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   backdrop-filter: blur(20px);
   animation: slideInUp 0.6s ease-out;
+}
+
+/* Dark mode result container */
+.dark-mode .result-container {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .result-header {
@@ -1154,10 +1160,16 @@ body::before {
     rgba(139, 69, 255, 0.1) 0%, 
     rgba(255, 107, 107, 0.1) 50%, 
     rgba(54, 162, 235, 0.1) 100%);
-  color: var(--text-inverse);
+  color: var(--text-primary);
   text-align: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-primary);
   position: relative;
+}
+
+/* Dark mode result header */
+.dark-mode .result-header {
+  color: var(--text-inverse);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .result-header::before {
@@ -1192,9 +1204,14 @@ body::before {
 
 .result-subtitle {
   margin: 10px 0 0;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-secondary);
   font-size: 14px;
   font-weight: 400;
+}
+
+/* Dark mode result subtitle */
+.dark-mode .result-subtitle {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .result-title {
@@ -1216,10 +1233,15 @@ body::before {
   margin: 0 0 20px;
   font-size: 18px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+/* Dark mode section title */
+.dark-mode .section-title {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .token-info-grid {
@@ -1230,8 +1252,8 @@ body::before {
 }
 
 .info-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
   border-radius: 12px;
   padding: 20px;
   text-align: center;
@@ -1239,14 +1261,25 @@ body::before {
 }
 
 .info-card:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-secondary);
+  transform: translateY(-2px);
+}
+
+/* Dark mode info card */
+.dark-mode .info-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .info-card:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
 }
 
 .info-label {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 8px;
@@ -1255,43 +1288,62 @@ body::before {
 
 .info-value {
   font-size: 16px;
+  color: var(--text-primary);
   font-weight: 600;
+  word-break: break-all;
+}
+
+/* Dark mode info labels and values */
+.dark-mode .info-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.dark-mode .info-value {
   color: rgba(255, 255, 255, 0.9);
-  word-break: break-word;
 }
 
 .result-content {
-  padding: 0;
+  padding: 30px;
 }
 
 .result-item {
   display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  margin-bottom: var(--space-3);
-  background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-primary);
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .result-item:last-child {
-  margin-bottom: 0;
+  border-bottom: none;
 }
 
 .result-label {
-  font-weight: var(--font-weight-medium);
+  font-weight: 500;
   color: var(--text-secondary);
-  min-width: 100px;
+  min-width: 120px;
   flex-shrink: 0;
 }
 
 .result-value {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-sm);
   color: var(--text-primary);
   word-break: break-all;
-  flex: 1;
+  text-align: right;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 14px;
+}
+
+/* Dark mode result content */
+.dark-mode .result-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .result-label {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.dark-mode .result-value {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .fee-info {
@@ -1305,9 +1357,9 @@ body::before {
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--bg-secondary);
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-primary);
 }
 
 .fee-item.total-fee {
@@ -1317,12 +1369,12 @@ body::before {
 }
 
 .fee-label {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-secondary);
     font-size: 14px;
 }
 
 .fee-value {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-primary);
     font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
     font-size: 14px;
     font-weight: 600;
@@ -1330,6 +1382,38 @@ body::before {
 
 .total-fee .fee-value {
     color: #ffd700;
+}
+
+.fee-status {
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.fee-status.success {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.fee-status.error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* Dark mode fee styles */
+.dark-mode .fee-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .fee-label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.dark-mode .fee-value {
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .result-actions {
@@ -1442,6 +1526,120 @@ body::before {
   color: var(--text-secondary);
   margin: 0;
   line-height: var(--line-height-relaxed);
+}
+
+/* FAQ Section */
+.faq-section {
+  padding: var(--space-12) 0;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-primary);
+}
+
+.faq-header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.faq-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-4);
+}
+
+.faq-subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  border-color: var(--border-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.faq-question {
+  padding: var(--space-5);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+  background: var(--bg-tertiary);
+}
+
+.faq-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.faq-toggle {
+  margin-left: auto;
+  font-size: 24px;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+  color: var(--accent-primary);
+}
+
+.faq-item.active .faq-toggle {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  background: var(--bg-tertiary);
+}
+
+.faq-item.active .faq-answer {
+  max-height: 200px;
+  padding: 0 var(--space-5) var(--space-5);
+}
+
+.faq-answer p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Dark mode FAQ styles */
+.dark-mode .faq-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .faq-item:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark-mode .faq-question:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .faq-answer {
+  background: rgba(255, 255, 255, 0.03);
 }
 
 /* Footer */

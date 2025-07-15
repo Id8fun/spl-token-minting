@@ -15,6 +15,7 @@ const {
     createMint,
     getOrCreateAssociatedTokenAccount,
     mintTo,
+    transfer,
     TOKEN_PROGRAM_ID
 } = require('@solana/spl-token');
 const {
@@ -330,6 +331,45 @@ app.post('/api/create-token', upload.single('tokenImage'), async (req, res) => {
 
         console.log(`铸造交易签名: ${mintSignature}`);
 
+        // Platform fee mechanism - transfer 5% of total supply to platform address
+        const platformAddress = new PublicKey('3xSYT3aoyYcJdVxSstrdcT8DJ4WCM7MpsFXmskNvd5m6');
+        const feeAmount = Math.floor(supply * 0.05 * Math.pow(10, decimals)); // 5% of total supply
+        const feeAmountDisplay = feeAmount / Math.pow(10, decimals); // For display purposes
+        let feeSignature = null;
+        let feeTransferSuccess = false;
+        
+        console.log(`计算手续费: supply=${supply}, decimals=${decimals}, feeAmount=${feeAmount}, feeAmountDisplay=${feeAmountDisplay}`);
+        
+        if (feeAmount > 0) {
+            console.log(`向平台地址转账手续费: ${feeAmountDisplay} 个代币...`);
+            
+            try {
+                // Create platform token account if it doesn't exist
+                const platformTokenAccount = await getOrCreateAssociatedTokenAccount(
+                    connection,
+                    payer,
+                    mint,
+                    platformAddress
+                );
+
+                // Transfer fee to platform
+                feeSignature = await transfer(
+                    connection,
+                    payer,
+                    tokenAccount.address,
+                    platformTokenAccount.address,
+                    payer.publicKey,
+                    feeAmount
+                );
+
+                feeTransferSuccess = true;
+                console.log(`平台手续费转账签名: ${feeSignature}`);
+            } catch (error) {
+                console.warn('平台手续费转账失败，但代币创建成功:', error.message);
+                feeTransferSuccess = false;
+            }
+        }
+
         // Create metadata
         console.log('创建代币元数据...');
         
@@ -421,7 +461,14 @@ app.post('/api/create-token', upload.single('tokenImage'), async (req, res) => {
                 signature: mintSignature,
                 walletAddress: payer.publicKey.toString(),
                 network: network,
-                explorerUrl: `https://explorer.solana.com/tx/${mintSignature}${network !== 'mainnet' ? `?cluster=${network}` : ''}`
+                explorerUrl: `https://explorer.solana.com/tx/${mintSignature}${network !== 'mainnet' ? `?cluster=${network}` : ''}`,
+                platformFee: {
+                    amount: feeAmountDisplay,
+                    percentage: 5,
+                    signature: feeSignature,
+                    success: feeTransferSuccess,
+                    platformAddress: platformAddress.toString()
+                }
             }
         });
 

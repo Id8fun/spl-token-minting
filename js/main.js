@@ -15,7 +15,7 @@ class SPLTokenMinter {
         };
         
         // API base URL - 确保指向正确的服务器地址
-        this.apiBaseUrl = 'http://localhost:3000';
+        this.apiBaseUrl = 'http://localhost:3001';
         
         this.currentNetwork = 'devnet';
         this.selectedImage = null;
@@ -71,6 +71,7 @@ class SPLTokenMinter {
                 'tokenDecimalsLabel': '小数位数',
                 'networkFeeLabel': '网络费用:',
                 'metadataFeeLabel': '元数据费用:',
+                'platformFeeLabel': '平台手续费:',
                 'totalFeeLabel': '总费用:',
                 'tokenAddress': '代币地址:',
                 'tokenAccount': '代币账户:',
@@ -79,7 +80,35 @@ class SPLTokenMinter {
                 'createNewToken': '创建新代币',
                 'errorTitle': '创建失败',
                 'footerText': '© 2024 SPL Token Minting. 基于 Solana 区块链技术',
-                'previewAlt': '预览图片'
+                'previewAlt': '预览图片',
+                'faq': {
+                    'title': '常见问题',
+                    'subtitle': '关于SPL代币创建的常见问题解答',
+                    'q1': {
+                        'question': '什么是SPL代币？',
+                        'answer': 'SPL代币是基于Solana区块链的标准代币格式，类似于以太坊的ERC-20代币。它具有高速度、低费用的特点，适合各种去中心化应用。'
+                    },
+                    'q2': {
+                        'question': '创建代币需要多少费用？',
+                        'answer': '创建SPL代币的网络费用通常在0.01-0.02 SOL之间。此外，平台会收取总供应量5%的代币作为服务费。'
+                    },
+                    'q3': {
+                        'question': '私钥安全吗？',
+                        'answer': '您的私钥仅在本地浏览器中处理，不会被发送到我们的服务器存储。请妥善保管您的私钥，不要泄露给他人。'
+                    },
+                    'q4': {
+                        'question': '支持哪些网络？',
+                        'answer': '我们支持Solana的三个网络环境：Devnet（开发网络）、Testnet（测试网络）和Mainnet（主网）。建议先在Devnet测试。'
+                    },
+                    'q5': {
+                        'question': '对代币图片有什么要求？',
+                        'answer': '支持PNG、JPG、GIF格式，文件大小不超过5MB，推荐使用1000x1000像素的正方形图片以获得最佳显示效果。'
+                    },
+                    'q6': {
+                        'question': '创建代币需要多长时间？',
+                        'answer': '通常在1-3分钟内完成，具体时间取决于网络拥堵情况。创建过程包括验证、铸造、转账手续费和元数据创建等步骤。'
+                    }
+                }
             },
             'en': {
                 'title': 'SPL Token Minting - SOLANA Token Generator',
@@ -126,6 +155,7 @@ class SPLTokenMinter {
                 'tokenDecimalsLabel': 'Decimals',
                 'networkFeeLabel': 'Network Fee:',
                 'metadataFeeLabel': 'Metadata Fee:',
+                'platformFeeLabel': 'Platform Fee:',
                 'totalFeeLabel': 'Total Fee:',
                 'tokenAddress': 'Token Address:',
                 'tokenAccount': 'Token Account:',
@@ -134,7 +164,35 @@ class SPLTokenMinter {
                 'createNewToken': 'Create New Token',
                 'errorTitle': 'Creation Failed',
                 'footerText': '© 2024 SPL Token Minting. Based on Solana Blockchain Technology',
-                'previewAlt': 'Preview Image'
+                'previewAlt': 'Preview Image',
+                'faq': {
+                    'title': 'Frequently Asked Questions',
+                    'subtitle': 'Common questions about SPL token creation',
+                    'q1': {
+                        'question': 'What is an SPL Token?',
+                        'answer': 'SPL tokens are the standard token format on the Solana blockchain, similar to ERC-20 tokens on Ethereum. They feature high speed and low fees, making them suitable for various decentralized applications.'
+                    },
+                    'q2': {
+                        'question': 'How much does it cost to create a token?',
+                        'answer': 'Creating an SPL token typically costs 0.01-0.02 SOL in network fees. Additionally, the platform charges 5% of the total supply as a service fee.'
+                    },
+                    'q3': {
+                        'question': 'Is my private key secure?',
+                        'answer': 'Your private key is only processed locally in your browser and is never sent to or stored on our servers. Please keep your private key safe and never share it with others.'
+                    },
+                    'q4': {
+                        'question': 'Which networks are supported?',
+                        'answer': 'We support three Solana network environments: Devnet (development), Testnet (testing), and Mainnet (production). We recommend testing on Devnet first.'
+                    },
+                    'q5': {
+                        'question': 'What are the image requirements?',
+                        'answer': 'We support PNG, JPG, and GIF formats with a maximum file size of 5MB. We recommend using 1000x1000 pixel square images for the best display results.'
+                    },
+                    'q6': {
+                        'question': 'How long does token creation take?',
+                        'answer': 'Token creation typically takes 1-3 minutes, depending on network congestion. The process includes validation, minting, fee transfer, and metadata creation steps.'
+                    }
+                }
             }
         };
         
@@ -837,7 +895,7 @@ class SPLTokenMinter {
         document.getElementById('tokenAccount').textContent = data.tokenAccount;
         document.getElementById('transactionSignature').textContent = data.signature;
         
-        // 计算和显示费用信息（模拟数据，实际应从后端获取）
+        // 计算和显示费用信息
         const networkFee = 0.000005; // 基础网络费用
         const metadataFee = 0.00144; // 元数据创建费用
         const totalFee = networkFee + metadataFee;
@@ -845,6 +903,26 @@ class SPLTokenMinter {
         document.getElementById('networkFee').textContent = `${networkFee.toFixed(6)} SOL`;
         document.getElementById('metadataFee').textContent = `${metadataFee.toFixed(6)} SOL`;
         document.getElementById('totalFee').textContent = `${totalFee.toFixed(6)} SOL`;
+        
+        // 显示平台手续费信息
+        if (data.platformFee) {
+            const platformFeeElement = document.getElementById('platformFee');
+            const platformFeeStatusElement = document.getElementById('platformFeeStatus');
+            
+            if (platformFeeElement) {
+                platformFeeElement.textContent = `${data.platformFee.amount.toLocaleString()} ${tokenSymbol} (${data.platformFee.percentage}%)`;
+            }
+            
+            if (platformFeeStatusElement) {
+                if (data.platformFee.success) {
+                    platformFeeStatusElement.textContent = '✅ 已支付';
+                    platformFeeStatusElement.className = 'fee-status success';
+                } else {
+                    platformFeeStatusElement.textContent = '❌ 支付失败';
+                    platformFeeStatusElement.className = 'fee-status error';
+                }
+            }
+        }
         
         // 更新浏览器链接
         const explorerLink = document.getElementById('explorerLink');
@@ -1032,6 +1110,9 @@ class SPLTokenMinter {
         const metadataFeeLabel = document.querySelector('[data-label="metadataFee"]');
         if (metadataFeeLabel) metadataFeeLabel.textContent = t.metadataFeeLabel;
         
+        const platformFeeLabel = document.querySelector('[data-label="platformFee"]');
+        if (platformFeeLabel) platformFeeLabel.textContent = t.platformFeeLabel;
+        
         const totalFeeLabel = document.querySelector('[data-label="totalFee"]');
         if (totalFeeLabel) totalFeeLabel.textContent = t.totalFeeLabel;
         
@@ -1064,6 +1145,39 @@ class SPLTokenMinter {
         // Update image preview alt text
         const previewImg = document.getElementById('previewImg');
         if (previewImg) previewImg.alt = t.previewAlt;
+        
+        // Update FAQ section
+        if (t.faq) {
+            const faqTitle = document.querySelector('.faq-title');
+            if (faqTitle) faqTitle.textContent = t.faq.title;
+            
+            const faqSubtitle = document.querySelector('.faq-subtitle');
+            if (faqSubtitle) faqSubtitle.textContent = t.faq.subtitle;
+            
+            // Update FAQ questions and answers
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach((item, index) => {
+                const questionKey = `q${index + 1}`;
+                if (t.faq[questionKey]) {
+                    const questionElement = item.querySelector('.faq-question');
+                    const answerElement = item.querySelector('.faq-answer p');
+                    
+                    if (questionElement) {
+                        // Keep the icon and toggle, only update the text
+                        const icon = questionElement.querySelector('.faq-icon');
+                        const toggle = questionElement.querySelector('.faq-toggle');
+                        questionElement.innerHTML = '';
+                        if (icon) questionElement.appendChild(icon);
+                        questionElement.appendChild(document.createTextNode(t.faq[questionKey].question));
+                        if (toggle) questionElement.appendChild(toggle);
+                    }
+                    
+                    if (answerElement) {
+                        answerElement.textContent = t.faq[questionKey].answer;
+                    }
+                }
+            });
+        }
     }
 
     // Color mode functionality
@@ -1134,6 +1248,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add some visual enhancements
     addVisualEnhancements();
+    
+    // Initialize FAQ functionality
+    initializeFAQ();
 });
 
 function addVisualEnhancements() {
@@ -1202,4 +1319,43 @@ function addVisualEnhancements() {
         }
     `;
     document.head.appendChild(style);
+}
+
+// FAQ functionality
+function initializeFAQ() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const toggle = item.querySelector('.faq-toggle');
+        
+        if (question && answer && toggle) {
+            question.addEventListener('click', () => {
+                const isOpen = item.classList.contains('active');
+                
+                // Close all other FAQ items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                        const otherAnswer = otherItem.querySelector('.faq-answer');
+                        const otherToggle = otherItem.querySelector('.faq-toggle');
+                        if (otherAnswer) otherAnswer.style.maxHeight = '0';
+                        if (otherToggle) otherToggle.textContent = '+';
+                    }
+                });
+                
+                // Toggle current item
+                if (isOpen) {
+                    item.classList.remove('active');
+                    answer.style.maxHeight = '0';
+                    toggle.textContent = '+';
+                } else {
+                    item.classList.add('active');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                    toggle.textContent = '−';
+                }
+            });
+        }
+    });
 }
