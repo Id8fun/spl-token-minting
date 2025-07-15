@@ -1119,20 +1119,64 @@ body::before {
 .result-container {
   max-width: 600px;
   margin: var(--space-8) auto 0;
-  background: var(--bg-primary);
-  border-radius: var(--card-border-radius);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1);
-  border: var(--card-border);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   overflow: hidden;
   transform: translateY(0);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(20px);
+  animation: slideInUp 0.6s ease-out;
 }
 
 .result-header {
-  padding: var(--space-6);
-  background: linear-gradient(135deg, var(--success-600) 0%, var(--success-500) 100%);
+  padding: 40px 30px 30px;
+  background: linear-gradient(135deg, 
+    rgba(139, 69, 255, 0.1) 0%, 
+    rgba(255, 107, 107, 0.1) 50%, 
+    rgba(54, 162, 235, 0.1) 100%);
   color: var(--text-inverse);
   text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.result-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #8b45ff, #ff6b6b, #36a2eb, #4bc0c0);
+  background-size: 300% 100%;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+.success-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+  animation: bounce 1s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.result-subtitle {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .result-title {
@@ -1141,8 +1185,65 @@ body::before {
   margin: 0;
 }
 
+.result-section {
+  padding: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.result-section:last-child {
+  border-bottom: none;
+}
+
+.section-title {
+  margin: 0 0 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.token-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.info-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.info-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  word-break: break-word;
+}
+
 .result-content {
-  padding: var(--space-6);
+  padding: 0;
 }
 
 .result-item {
@@ -1173,6 +1274,95 @@ body::before {
   color: var(--text-primary);
   word-break: break-all;
   flex: 1;
+}
+
+.fee-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.fee-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fee-item.total-fee {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: rgba(255, 215, 0, 0.3);
+    font-weight: 600;
+}
+
+.fee-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.fee-value {
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.total-fee .fee-value {
+    color: #ffd700;
+}
+
+.result-actions {
+    padding: 30px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    min-width: 160px;
+    justify-content: center;
+}
+
+.action-btn.primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.action-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.action-btn.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.action-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.btn-icon {
+    font-size: 16px;
 }
 
 .copy-btn {
@@ -1275,18 +1465,75 @@ body::before {
     padding: var(--space-4);
   }
   
+  .token-info-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  
+  .info-card {
+    padding: 16px;
+  }
+  
+  .result-section {
+    padding: 20px;
+  }
+  
+  .result-header {
+    padding: 30px 20px 20px;
+  }
+  
+  .result-title {
+    font-size: 24px;
+  }
+  
+  .success-icon {
+    font-size: 36px;
+  }
+  
   .result-item {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-2);
+    padding: 12px 16px;
   }
   
   .result-label {
     min-width: auto;
   }
   
+  .result-value {
+    margin: 0;
+    width: 100%;
+    font-size: 11px;
+  }
+  
   .copy-btn {
     align-self: flex-end;
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  
+  .result-actions {
+    padding: 20px;
+    flex-direction: column;
+  }
+  
+  .action-btn {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .fee-item {
+    padding: 10px 12px;
+  }
+  
+  .fee-label,
+  .fee-value {
+    font-size: 13px;
+  }
+  
+  .section-title {
+    font-size: 16px;
   }
 }
 

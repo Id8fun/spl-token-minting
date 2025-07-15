@@ -339,28 +339,85 @@
                 <!-- 结果显示区域 -->
                 <div id="resultContainer" class="result-container" style="display: none;">
                     <div class="result-header">
+                        <div class="success-icon">🎉</div>
                         <h3 class="result-title">代币创建成功！</h3>
+                        <p class="result-subtitle">您的SPL代币已成功部署到Solana区块链</p>
                     </div>
-                    <div class="result-content">
-                        <div class="result-item">
-                            <span class="result-label">代币地址:</span>
-                            <span id="tokenMint" class="result-value"></span>
-                            <button class="copy-btn" onclick="copyToClipboard('tokenMint')">复制</button>
+                    
+                    <!-- 代币基本信息 -->
+                    <div class="result-section">
+                        <h4 class="section-title">📋 代币信息</h4>
+                        <div class="token-info-grid">
+                            <div class="info-card">
+                                <div class="info-label">代币名称</div>
+                                <div id="resultTokenName" class="info-value">--</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">代币符号</div>
+                                <div id="resultTokenSymbol" class="info-value">--</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">总供应量</div>
+                                <div id="resultTokenSupply" class="info-value">--</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">小数位数</div>
+                                <div id="resultTokenDecimals" class="info-value">--</div>
+                            </div>
                         </div>
-                        <div class="result-item">
-                            <span class="result-label">代币账户:</span>
-                            <span id="tokenAccount" class="result-value"></span>
-                            <button class="copy-btn" onclick="copyToClipboard('tokenAccount')">复制</button>
+                    </div>
+                    
+                    <!-- 区块链信息 -->
+                    <div class="result-section">
+                        <h4 class="section-title">🔗 区块链信息</h4>
+                        <div class="result-content">
+                            <div class="result-item">
+                                <span class="result-label">代币地址:</span>
+                                <span id="tokenMint" class="result-value"></span>
+                                <button class="copy-btn" onclick="copyToClipboard('tokenMint')">复制</button>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">代币账户:</span>
+                                <span id="tokenAccount" class="result-value"></span>
+                                <button class="copy-btn" onclick="copyToClipboard('tokenAccount')">复制</button>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">交易签名:</span>
+                                <span id="transactionSignature" class="result-value"></span>
+                                <button class="copy-btn" onclick="copyToClipboard('transactionSignature')">复制</button>
+                            </div>
                         </div>
-                        <div class="result-item">
-                            <span class="result-label">交易签名:</span>
-                            <span id="transactionSignature" class="result-value"></span>
-                            <button class="copy-btn" onclick="copyToClipboard('transactionSignature')">复制</button>
+                    </div>
+                    
+                    <!-- 交易费用信息 -->
+                    <div class="result-section">
+                        <h4 class="section-title">💰 交易费用</h4>
+                        <div class="fee-info">
+                            <div class="fee-item">
+                                <span class="fee-label">网络费用:</span>
+                                <span id="networkFee" class="fee-value">-- SOL</span>
+                            </div>
+                            <div class="fee-item">
+                                <span class="fee-label">元数据费用:</span>
+                                <span id="metadataFee" class="fee-value">-- SOL</span>
+                            </div>
+                            <div class="fee-item total-fee">
+                                <span class="fee-label">总费用:</span>
+                                <span id="totalFee" class="fee-value">-- SOL</span>
+                            </div>
                         </div>
-                        <div class="result-item">
-                            <span class="result-label">Solana Explorer:</span>
-                            <a id="explorerLink" href="#" target="_blank" class="explorer-link">查看交易</a>
-                        </div>
+                    </div>
+                    
+                    <!-- 操作按钮 -->
+                    <div class="result-actions">
+                        <a id="explorerLink" href="#" target="_blank" class="action-btn primary">
+                            <span class="btn-icon">🔍</span>
+                            在Solana Explorer查看
+                        </a>
+                        <button class="action-btn secondary" onclick="window.location.reload()">
+                            <span class="btn-icon">🔄</span>
+                            创建新代币
+                        </button>
                     </div>
                 </div>
 

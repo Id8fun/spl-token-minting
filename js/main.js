@@ -795,24 +795,55 @@ class SPLTokenMinter {
         // 适配新的响应格式 - 数据在 result.data 中
         const data = result.data || result;
         
-        // Update result fields
+        // 获取表单数据用于显示代币信息
+        const formData = new FormData(document.getElementById('tokenForm'));
+        const tokenName = formData.get('tokenName') || 'Unknown Token';
+        const tokenSymbol = formData.get('tokenSymbol') || 'UNKNOWN';
+        const tokenSupply = formData.get('tokenSupply') || '0';
+        const tokenDecimals = formData.get('tokenDecimals') || '9';
+        
+        // 更新代币基本信息
+        document.getElementById('resultTokenName').textContent = tokenName;
+        document.getElementById('resultTokenSymbol').textContent = tokenSymbol;
+        document.getElementById('resultTokenSupply').textContent = `${Number(tokenSupply).toLocaleString()} ${tokenSymbol}`;
+        document.getElementById('resultTokenDecimals').textContent = tokenDecimals;
+        
+        // 更新区块链信息
         document.getElementById('tokenMint').textContent = data.mintAddress;
         document.getElementById('tokenAccount').textContent = data.tokenAccount;
         document.getElementById('transactionSignature').textContent = data.signature;
         
-        // Update explorer link
+        // 计算和显示费用信息（模拟数据，实际应从后端获取）
+        const networkFee = 0.000005; // 基础网络费用
+        const metadataFee = 0.00144; // 元数据创建费用
+        const totalFee = networkFee + metadataFee;
+        
+        document.getElementById('networkFee').textContent = `${networkFee.toFixed(6)} SOL`;
+        document.getElementById('metadataFee').textContent = `${metadataFee.toFixed(6)} SOL`;
+        document.getElementById('totalFee').textContent = `${totalFee.toFixed(6)} SOL`;
+        
+        // 更新浏览器链接
         const explorerLink = document.getElementById('explorerLink');
         const explorerUrl = data.explorerUrl || `${this.explorerUrls[this.currentNetwork]}/tx/${data.signature}`;
         explorerLink.href = explorerUrl;
         
-        // Show result container
+        // 显示结果容器
         document.getElementById('resultContainer').style.display = 'block';
         
-        // Scroll to result
+        // 滚动到结果区域
         document.getElementById('resultContainer').scrollIntoView({ 
             behavior: 'smooth',
             block: 'start'
         });
+        
+        // 添加成功动画效果
+        setTimeout(() => {
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.style.transform = 'scale(1.02)';
+            setTimeout(() => {
+                resultContainer.style.transform = 'scale(1)';
+            }, 200);
+        }, 100);
     }
 
     showError(message) {
