@@ -1,0 +1,31 @@
+{
+  "name": "spl-token-minting-frontend",
+  "version": "1.0.0",
+  "description": "SPL Token Minting Tool - Frontend",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "dev": "python3 -m http.server 8080",
+    "build": "echo 'No build step required for static frontend'",
+    "preview": "python3 -m http.server 8080"
+  },
+  "keywords": [
+    "solana",
+    "spl-token",
+    "blockchain",
+    "cryptocurrency",
+    "frontend"
+  ],
+  "author": "Your Name",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lyrick/spl-token-minting.git"
+  },
+  "homepage": "https://github.com/lyrick/spl-token-minting#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
