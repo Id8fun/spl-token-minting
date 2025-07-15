@@ -15,7 +15,8 @@ class SPLTokenMinter {
         };
         
         // API base URL - 确保指向正确的服务器地址
-        this.apiBaseUrl = 'http://localhost:3001';
+        // 动态检测API基础URL
+        this.apiBaseUrl = this.getApiBaseUrl();
         
         this.currentNetwork = 'devnet';
         this.selectedImage = null;
@@ -197,6 +198,27 @@ class SPLTokenMinter {
         };
         
         this.initializeEventListeners();
+    }
+
+    // 动态获取API基础URL
+    getApiBaseUrl() {
+        const hostname = window.location.hostname;
+        const protocol = window.location.protocol;
+        
+        // 如果是本地开发环境
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            return 'http://localhost:3001';
+        }
+        
+        // 如果是生产环境，使用相同的域名但不同的端口或路径
+        // 根据你的CF部署配置调整
+        if (hostname === 'solcoin.id8.fun') {
+            return `${protocol}//${hostname}/api`;
+        }
+        
+        // 默认情况下，假设API在同一域名下
+        return `${protocol}//${hostname}:3001`;
+    }
         this.initializeColorMode();
         this.initializeLanguage();
     }
