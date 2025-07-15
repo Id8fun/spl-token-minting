@@ -31,10 +31,26 @@ body::before {
     z-index: -1;
 }
 
-[data-theme="dark"] body::before {
+[data-theme="dark"] body::before,
+.dark-mode body::before {
     background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 40% 40%, rgba(34, 197, 94, 0.03) 0%, transparent 50%);
+}
+
+/* Dark Mode Color Variables */
+.dark-mode {
+    --bg-primary: var(--neutral-900);
+    --bg-secondary: var(--neutral-800);
+    --bg-tertiary: var(--neutral-700);
+    
+    --text-primary: var(--neutral-50);
+    --text-secondary: var(--neutral-300);
+    --text-tertiary: var(--neutral-400);
+    --text-inverse: var(--neutral-900);
+    
+    --border-primary: var(--neutral-700);
+    --border-secondary: var(--neutral-600);
 }
 
 /* 页面加载动画 */
@@ -554,10 +570,12 @@ body::before {
 }
 
 .image-preview img {
-  width: 100%;
+  width: 200px;
   height: 200px;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
 }
 
 .remove-image {
@@ -1688,36 +1706,6 @@ body.dark-mode .result-container,
 body.dark-mode .error-container {
   background: rgba(26, 26, 26, 0.9);
   border: 1px solid rgba(64, 64, 64, 0.3);
-}
-
-/* 修复暗色模式下结果区域文字颜色 */
-body.dark-mode .result-title,
-body.dark-mode .result-subtitle,
-body.dark-mode .section-title,
-body.dark-mode .info-label,
-body.dark-mode .info-value,
-body.dark-mode .result-label,
-body.dark-mode .fee-label,
-body.dark-mode .fee-value {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-body.dark-mode .result-subtitle {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-body.dark-mode .info-label {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-body.dark-mode .total-fee .fee-value {
-  color: #ffd700;
-}
-
-body.dark-mode .result-value {
-  color: rgba(255, 255, 255, 0.8);
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 body.dark-mode .error-container {

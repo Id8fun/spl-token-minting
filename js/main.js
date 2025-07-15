@@ -2,8 +2,11 @@
 
 class SPLTokenMinter {
     constructor() {
-        // RPC endpoints are handled securely on the server side
-        // Frontend communicates with backend API only
+        this.rpcEndpoints = {
+            devnet: 'https://falling-virulent-lake.solana-devnet.quiknode.pro/1a9dd93335edb93c8953755162ba7acf57bf73cd',
+            testnet: 'https://falling-virulent-lake.solana-testnet.quiknode.pro/1a9dd93335edb93c8953755162ba7acf57bf73cd',
+            mainnet: 'https://falling-virulent-lake.solana-mainnet.quiknode.pro/1a9dd93335edb93c8953755162ba7acf57bf73cd'
+        };
         
         this.explorerUrls = {
             devnet: 'https://explorer.solana.com/?cluster=devnet',
@@ -69,12 +72,11 @@ class SPLTokenMinter {
                 'networkFeeLabel': '网络费用:',
                 'metadataFeeLabel': '元数据费用:',
                 'totalFeeLabel': '总费用:',
-                'viewInExplorer': '在Solana Explorer查看',
-                'createNewToken': '创建新代币',
                 'tokenAddress': '代币地址:',
                 'tokenAccount': '代币账户:',
                 'transactionSignature': '交易签名:',
-                'solanaExplorer': 'Solana Explorer:',
+                'viewInExplorer': '在Solana Explorer查看',
+                'createNewToken': '创建新代币',
                 'errorTitle': '创建失败',
                 'footerText': '© 2024 SPL Token Minting. 基于 Solana 区块链技术',
                 'previewAlt': '预览图片'
@@ -114,7 +116,7 @@ class SPLTokenMinter {
                 'decimals6': '6 (Recommended)',
                 'decimals9': '9 (Like SOL)',
                 'successTitle': 'Token Created Successfully!',
-                'successSubtitle': 'Your SPL token has been successfully deployed to the Solana blockchain',
+                'successSubtitle': 'Your SPL token has been successfully deployed to Solana blockchain',
                 'tokenInfoSection': '📋 Token Information',
                 'blockchainInfoSection': '🔗 Blockchain Information',
                 'feeInfoSection': '💰 Transaction Fees',
@@ -125,12 +127,11 @@ class SPLTokenMinter {
                 'networkFeeLabel': 'Network Fee:',
                 'metadataFeeLabel': 'Metadata Fee:',
                 'totalFeeLabel': 'Total Fee:',
-                'viewInExplorer': 'View in Solana Explorer',
-                'createNewToken': 'Create New Token',
                 'tokenAddress': 'Token Address:',
                 'tokenAccount': 'Token Account:',
                 'transactionSignature': 'Transaction Signature:',
-                'solanaExplorer': 'Solana Explorer:',
+                'viewInExplorer': 'View in Solana Explorer',
+                'createNewToken': 'Create New Token',
                 'errorTitle': 'Creation Failed',
                 'footerText': '© 2024 SPL Token Minting. Based on Solana Blockchain Technology',
                 'previewAlt': 'Preview Image'
@@ -1005,30 +1006,41 @@ class SPLTokenMinter {
         if (sectionTitles[1]) sectionTitles[1].textContent = t.blockchainInfoSection;
         if (sectionTitles[2]) sectionTitles[2].textContent = t.feeInfoSection;
         
-        // Update info labels
-        const infoLabels = document.querySelectorAll('.info-label');
-        if (infoLabels[0]) infoLabels[0].textContent = t.tokenNameLabel;
-        if (infoLabels[1]) infoLabels[1].textContent = t.tokenSymbolLabel;
-        if (infoLabels[2]) infoLabels[2].textContent = t.tokenSupplyLabel;
-        if (infoLabels[3]) infoLabels[3].textContent = t.tokenDecimalsLabel;
+        // Update token info labels
+        const tokenNameLabel = document.querySelector('[data-label="tokenName"]');
+        if (tokenNameLabel) tokenNameLabel.textContent = t.tokenNameLabel;
         
-        // Update result labels
+        const tokenSymbolLabel = document.querySelector('[data-label="tokenSymbol"]');
+        if (tokenSymbolLabel) tokenSymbolLabel.textContent = t.tokenSymbolLabel;
+        
+        const tokenSupplyLabel = document.querySelector('[data-label="tokenSupply"]');
+        if (tokenSupplyLabel) tokenSupplyLabel.textContent = t.tokenSupplyLabel;
+        
+        const tokenDecimalsLabel = document.querySelector('[data-label="tokenDecimals"]');
+        if (tokenDecimalsLabel) tokenDecimalsLabel.textContent = t.tokenDecimalsLabel;
+        
+        // Update blockchain info labels
         const resultLabels = document.querySelectorAll('.result-label');
         if (resultLabels[0]) resultLabels[0].textContent = t.tokenAddress;
         if (resultLabels[1]) resultLabels[1].textContent = t.tokenAccount;
         if (resultLabels[2]) resultLabels[2].textContent = t.transactionSignature;
-        if (resultLabels[3]) resultLabels[3].textContent = t.solanaExplorer;
         
         // Update fee labels
-        const feeLabels = document.querySelectorAll('.fee-label');
-        if (feeLabels[0]) feeLabels[0].textContent = t.networkFeeLabel;
-        if (feeLabels[1]) feeLabels[1].textContent = t.metadataFeeLabel;
-        if (feeLabels[2]) feeLabels[2].textContent = t.totalFeeLabel;
+        const networkFeeLabel = document.querySelector('[data-label="networkFee"]');
+        if (networkFeeLabel) networkFeeLabel.textContent = t.networkFeeLabel;
+        
+        const metadataFeeLabel = document.querySelector('[data-label="metadataFee"]');
+        if (metadataFeeLabel) metadataFeeLabel.textContent = t.metadataFeeLabel;
+        
+        const totalFeeLabel = document.querySelector('[data-label="totalFee"]');
+        if (totalFeeLabel) totalFeeLabel.textContent = t.totalFeeLabel;
         
         // Update action buttons
-        const actionBtns = document.querySelectorAll('.action-btn');
-        if (actionBtns[0]) actionBtns[0].textContent = t.viewInExplorer;
-        if (actionBtns[1]) actionBtns[1].textContent = t.createNewToken;
+        const explorerBtn = document.querySelector('.action-btn[onclick*="explorer"]');
+        if (explorerBtn) explorerBtn.textContent = t.viewInExplorer;
+        
+        const newTokenBtn = document.querySelector('.action-btn[onclick*="hideResults"]');
+        if (newTokenBtn) newTokenBtn.textContent = t.createNewToken;
         
         // Update error section
         const errorTitle = document.querySelector('.error-title');

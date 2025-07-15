@@ -26,15 +26,12 @@ const bs58 = require('bs58');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// RPC endpoints configuration - using public endpoints for security
+// RPC endpoints configuration
 const RPC_ENDPOINTS = {
-    devnet: process.env.SOLANA_DEVNET_RPC || 'https://api.devnet.solana.com',
-    testnet: process.env.SOLANA_TESTNET_RPC || 'https://api.testnet.solana.com',
-    mainnet: process.env.SOLANA_MAINNET_RPC || 'https://api.mainnet-beta.solana.com'
+    devnet: 'https://falling-virulent-lake.solana-devnet.quiknode.pro/1a9dd93335edb93c8953755162ba7acf57bf73cd',
+    testnet: 'https://falling-virulent-lake.solana-testnet.quiknode.pro/1a9dd93335edb93c8953755162ba7acf57bf73cd',
+    mainnet: 'https://falling-virulent-lake.solana-mainnet.quiknode.pro/1a9dd93335edb93c8953755162ba7acf57bf73cd'
 };
-
-// Note: For production use, set environment variables:
-// SOLANA_DEVNET_RPC, SOLANA_TESTNET_RPC, SOLANA_MAINNET_RPC
 
 // Middleware
 app.use(cors());

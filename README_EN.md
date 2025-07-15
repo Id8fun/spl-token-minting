@@ -173,9 +173,11 @@ Content-Type: multipart/form-data
 
 The project supports three Solana network environments:
 
-- **Development (Devnet)**: For development and testing
-- **Test (Testnet)**: For final testing
-- **Production (Mainnet)**: Production environment
+| Environment | Network | RPC Endpoint |
+|-------------|---------|-------------|
+| Development | Devnet | `https://falling-virulent-lake.solana-devnet.quiknode.pro/...` |
+| Test | Testnet | `https://falling-virulent-lake.solana-testnet.quiknode.pro/...` |
+| Production | Mainnet | `https://falling-virulent-lake.solana-mainnet.quiknode.pro/...` |
 
 ## Contributing
 
