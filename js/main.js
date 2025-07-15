@@ -213,7 +213,7 @@ class SPLTokenMinter {
         // 如果是生产环境，使用相同的域名但不同的端口或路径
         // 根据你的CF部署配置调整
         if (hostname === 'solcoin.id8.fun') {
-            return `${protocol}//${hostname}/api`;
+            return `${protocol}//${hostname}`;
         }
         
         // 默认情况下，假设API在同一域名下
